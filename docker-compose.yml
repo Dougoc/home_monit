@@ -1,0 +1,19 @@
+version: '3'
+services:
+  exporter:
+    build: .
+    container_name: snmp_exporter
+    ports:
+      - "9116:9116"
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    links:
+      - "exporter:tplinkex"
+    command:
+    - --config.file=/etc/prometheus/prometheus.yml
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - 9090:9090
